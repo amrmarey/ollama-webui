@@ -1,138 +1,216 @@
-# Ollama WebUI with Docker Compose
+# 🚀 Ollama WebUI with Docker Compose
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-blue?logo=github)](https://github.com/amrmarey/ollama-webui)
-[![Docker](https://img.shields.io/badge/Docker-Compose-green?logo=docker)](https://docs.docker.com/compose/)
+[![Docker Compose](https://img.shields.io/badge/Docker-Compose-green?logo=docker)](https://docs.docker.com/compose/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Ollama](https://img.shields.io/badge/Ollama-AI%20Models-purple?logo=python)](https://ollama.com)
+[![Open WebUI](https://img.shields.io/badge/Open%20WebUI-Chat%20Interface-orange?logo=react)](https://github.com/open-webui/open-webui)
 
-This repository provides an enhanced Docker Compose setup for running [Ollama](https://ollama.com/) integrated with [Open WebUI](https://github.com/open-webui/open-webui) (formerly Ollama WebUI). Ollama is a lightweight tool for running large language models (LLMs) locally, and Open WebUI offers a user-friendly chat interface to interact with those models.
+> **Run Large Language Models (LLMs) locally with a beautiful, browser-based WebUI using Docker Compose — persistent, GPU-ready, and developer-friendly.**
 
-This setup simplifies deployment, making it easy to spin up a local AI chat environment with persistent data storage, GPU acceleration support (if available), and easy model management. It's ideal for developers, researchers, and enthusiasts wanting to experiment with LLMs without complex configurations.
+---
 
-## Features
+## ✨ Overview
 
-- **Easy Deployment**: One-command setup using Docker Compose.
-- **Persistent Storage**: Volumes for Ollama models and Open WebUI data to avoid re-downloading on restarts.
-- **GPU Support**: Automatic NVIDIA GPU detection for accelerated inference.
-- **Model Management**: Pull, run, and manage LLMs directly via the WebUI.
-- **Secure Access**: Optional authentication and HTTPS support (configurable).
-- **Scalable**: Easily extend with additional services like databases or monitoring.
-- **Cross-Platform**: Works on Linux, macOS, and Windows with Docker Desktop.
+This project provides a **modern Docker Compose setup** for running [Ollama](https://ollama.com/) integrated with [Open WebUI](https://github.com/open-webui/open-webui) (formerly “Ollama WebUI”).  
+Ollama runs open-source LLMs locally, while Open WebUI provides a fast, intuitive chat interface.
 
-## Prerequisites
+It’s perfect for:
+- 🧠 AI developers & researchers  
+- 💬 Self-hosted chatbot enthusiasts  
+- 🔐 Privacy-focused AI environments  
+- 💻 Local model testing  
 
-- [Docker](https://docs.docker.com/get-docker/) installed and running (version 20.10+).
-- [Docker Compose](https://docs.docker.com/compose/install/) (version 2.0+).
-- For GPU support: NVIDIA GPU with [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) installed.
-- At least 8GB RAM recommended for running small models; more for larger ones.
+---
 
-## Quick Start
+## 🌟 Features
 
-1. Clone this repository (or copy the `docker-compose.yml` file):
-   ```bash
-   git clone https://github.com/amrmarey/ollama-webui.git
-   cd ollama-webui
+- 🛠️ **One-command deployment** with Docker Compose  
+- 💾 **Persistent volumes** for models and data  
+- ⚡ **Automatic NVIDIA GPU acceleration** (if available)  
+- 🔐 **Optional HTTPS & Authentication**  
+- 🧠 **Cross-platform:** Linux, macOS, Windows  
+- 🔄 **API access** for integrations and automation  
 
+---
 
-Start the services:
+## 🧱 Prerequisites
+
+| Requirement | Version | Purpose |
+|--------------|----------|----------|
+| [Docker](https://docs.docker.com/get-docker/) | ≥ 20.10 | Container runtime |
+| [Docker Compose](https://docs.docker.com/compose/install/) | ≥ 2.0 | Orchestration |
+| (Optional) NVIDIA GPU | — | For accelerated inference |
+| [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) | — | GPU runtime |
+
+💡 **Recommendation:** 8GB+ RAM for small models, 16GB+ for larger ones.
+
+---
+
+## ⚙️ Quick Start
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/amrmarey/ollama-webui.git
+cd ollama-webui
+```
+
+### 2️⃣ Start the Services
+```bash
 docker compose up -d
+```
 
+### 3️⃣ Access the WebUI
+- Open [http://localhost:3000](http://localhost:3000)
+- Create your admin account on first login
 
-Access the WebUI:
-
-Open your browser and go to http://localhost:3000.
-On first login, create an admin account.
-
-
-Pull a model in the WebUI (e.g., Llama 3) or via CLI:
+### 4️⃣ Pull a Model
+```bash
 docker compose exec ollama ollama pull llama3
+```
 
+### 5️⃣ Start Chatting 🎉  
+Choose a model from the WebUI and start interacting.
 
-Start chatting! Select the model and interact in the interface.
-
-
-To stop the services:
+### 6️⃣ Stop the Services
+```bash
 docker compose down
+```
 
-Configuration
-The docker-compose.yml file is pre-configured for basic use. Customize it as needed:
-Environment Variables
+---
 
-OLLAMA_HOST: Set to 0.0.0.0:11434 for WebUI access (default).
-WEBUI_PORT: Change the exposed port (default: 3000).
-OLLAMA_MODELS_PATH: Path for model storage (default: ./models).
-WEBUI_DATA_PATH: Path for WebUI data (default: ./webui-data).
+## ⚙️ Configuration
 
-Example override in a .env file:
+### Environment Variables
+| Variable | Default | Description |
+|-----------|----------|-------------|
+| `OLLAMA_HOST` | `0.0.0.0:11434` | Ollama API endpoint |
+| `WEBUI_PORT` | `3000` | WebUI exposed port |
+| `OLLAMA_MODELS_PATH` | `./models` | Model storage path |
+| `WEBUI_DATA_PATH` | `./webui-data` | WebUI persistent data |
+
+Example `.env` file:
+```bash
 WEBUI_PORT=8080
-OLLAMA_MODELS_PATH=/path/to/your/models
+OLLAMA_MODELS_PATH=/opt/ollama/models
+```
 
-GPU Acceleration
-If you have an NVIDIA GPU, ensure the toolkit is installed and run:
+---
+
+## ⚡ GPU Acceleration
+
+Enable GPU mode:
+```bash
 docker compose --profile gpu up -d
+```
+> ✅ Ensure `nvidia-smi` works and `nvidia-container-toolkit` is installed.
 
-This uses the nvidia runtime automatically.
-HTTPS and Authentication
-For production:
+---
 
-Set WEBUI_HTTPS_ENABLED=true and provide cert/key paths.
-Configure user auth via environment vars (see Open WebUI docs).
+## 🔒 HTTPS & Authentication
 
-Usage
-Interacting with Models
+For secure production use:
+```bash
+WEBUI_HTTPS_ENABLED=true
+WEBUI_SSL_CERT_PATH=/path/to/cert.pem
+WEBUI_SSL_KEY_PATH=/path/to/key.pem
+```
 
-Via WebUI: Browse models, start chats, manage history, and fine-tune prompts.
-Via Ollama CLI: Exec into the container:docker compose exec ollama ollama run llama3 "Hello, world!"
+For user authentication, see [Open WebUI Docs](https://github.com/open-webui/open-webui#readme).
 
+---
 
-API Access: Ollama API at http://localhost:11434, WebUI API at http://localhost:3000/api.
+## 🧩 Usage
 
-Managing Models
+### 🧠 Interacting with Models
+#### Via WebUI
+Chat, view model list, and manage conversations.
 
-List models: docker compose exec ollama ollama list
-Remove model: docker compose exec ollama ollama rm <model-name>
-Models are stored in the ./models volume for persistence.
+#### Via CLI
+```bash
+docker compose exec ollama ollama run llama3 "Hello, world!"
+```
 
-Logs and Debugging
-View logs:
-docker compose logs -f ollama  # Ollama service
-docker compose logs -f webui   # WebUI service
+### 🔌 API Access
+- Ollama API → [http://localhost:11434](http://localhost:11434)  
+- WebUI API → [http://localhost:3000/api](http://localhost:3000/api)
 
-Supported Models
-Ollama supports hundreds of open-source models. Popular ones include:
+---
 
-Llama 3 (Meta): Versatile for chat and code.
-Mistral: Efficient for general tasks.
-Phi-3 (Microsoft): Lightweight and fast.
-Gemma (Google): Strong in reasoning.
+## 🧰 Managing Models
 
-Browse more at Ollama Library.
-Troubleshooting
+| Action | Command |
+|--------|----------|
+| List models | `docker compose exec ollama ollama list` |
+| Pull model | `docker compose exec ollama ollama pull llama3` |
+| Remove model | `docker compose exec ollama ollama rm <model-name>` |
 
-Port Conflicts: Change ports in docker-compose.yml.
-GPU Issues: Verify nvidia-smi works and toolkit is installed.
-Out of Memory: Increase Docker resource limits or use smaller models (e.g., 7B parameters).
-Slow Downloads: Models can be large (4-50GB); ensure stable internet.
-Permission Errors: Run docker compose down -v to reset volumes if needed.
+Models persist under `./models`.
 
-If issues persist, check Docker logs or open an issue on GitHub.
-Contributing
-Contributions are welcome! This project builds on the open-source spirit of Ollama and Open WebUI.
+---
 
-Fork the repository.
-Create a feature branch (git checkout -b feature/amazing-feature).
-Commit changes (git commit -m 'Add amazing feature').
-Push to the branch (git push origin feature/amazing-feature).
-Open a Pull Request.
+## 🪶 Logs & Debugging
 
-For questions, suggestions, or collaboration, contact the maintainer at amr.marey@msn.com.
-Please adhere to the Code of Conduct and ensure tests pass.
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
-Acknowledgments
+```bash
+docker compose logs -f ollama   # Ollama logs
+docker compose logs -f webui    # WebUI logs
+```
 
-Ollama for the core LLM runtime.
-Open WebUI for the intuitive interface.
-Docker and community for containerization magic.
+### Common Issues
+| Issue | Fix |
+|-------|-----|
+| Port conflict | Change ports in `.env` |
+| GPU not detected | Verify NVIDIA drivers & toolkit |
+| Out of memory | Use smaller models (7B or below) |
+| Permission denied | `docker compose down -v && docker compose up -d` |
 
+---
 
-Built with ❤️ by Amr Marey. Last updated: October 2025.```
+## 🧠 Supported Models
+
+| Model | Developer | Description |
+|--------|------------|-------------|
+| **Llama 3** | Meta | General-purpose chat & code |
+| **Mistral** | Mistral AI | Small and efficient |
+| **Phi-3** | Microsoft | Lightweight and accurate |
+| **Gemma** | Google | Excellent reasoning capabilities |
+
+🔗 Explore more on [Ollama Library](https://ollama.com/library)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repo  
+2. Create a branch:  
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. Commit changes:  
+   ```bash
+   git commit -m "Add amazing feature"
+   ```
+4. Push and open a Pull Request  
+
+🧩 Please follow the [Code of Conduct](./CODE_OF_CONDUCT.md) and ensure all tests pass.
+
+---
+
+## 📄 License
+
+Licensed under the **MIT License** — see [LICENSE](./LICENSE).
+
+---
+
+## 💬 Contact
+
+Maintainer: **[Amr Marey](mailto:amr.marey@msn.com)**  
+Built with ❤️ in Egypt 🇪🇬  
+_Last updated: October 2025_
+
+---
+
+### 🧭 Keywords (SEO)
+`ollama`, `ollama webui`, `docker compose`, `open webui`, `llama3`, `local llm`, `ai chat`, `self hosted ai`, `gpu inference`, `open source ai`, `ollama docker`, `open-webui docker compose`, `llm docker setup`
