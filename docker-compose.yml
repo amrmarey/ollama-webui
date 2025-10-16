@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    tty: true
+    restart: unless-stopped
+    volumes:
+      - ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ports:
+      - "11434:11434"  # Expose Ollama API if needed externally
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    volumes:
+      - open-webui:/app/backend/data
+    ports:
+      - "3000:8080"  # Access WebUI at http://localhost:3000
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - WEBUI_SECRET_KEY=  # Optional: Set for production security
+    depends_on:
+      - ollama
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  ollama: {}
+  open-webui: {}
